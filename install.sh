@@ -109,6 +109,17 @@ install_alpine() {
 
 }
 
+install_void() {
+  install_tools
+
+  info "Installing custom rc.local file to $INSTALL_DIR/etc/rc.local..."
+  cp ./src/lib/smartdc/joyent_rc.local $INSTALL_DIR/etc/rc.local
+  chmod +x $INSTALL_DIR/etc/rc.local
+
+  info "Installing shutdown wrapper script"
+  cp ./src/sbin/shutdown $INSTALL_DIR/sbin/
+}
+
 install_arch() {
   install_tools
 
@@ -138,6 +149,8 @@ case $OS in
       install_debian
     elif [[ -f $INSTALL_DIR/etc/alpine-release ]] ; then
       install_alpine
+    elif [[ -f $INSTALL_DIR/etc/void-release ]] ; then
+      install_void
     elif [[ -f $INSTALL_DIR/etc/arch-release ]] ; then
       install_arch
     else
